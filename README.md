@@ -1,5 +1,5 @@
-### Summary: Include screen shots or a video of your app highlighting its features
-![simulator_screenshot_D04DF3AC-1B16-4D1F-8C64-4DAD5FB52880](https://github.com/user-attachments/assets/a3fb5cac-b54c-4275-927b-c66e932d5194)
+### Summary: Include screen shots or a video of your app highlighting its features 
+![Simulator Screenshot - iPhone 16 Pro - 2025-02-03 at 13 41 31 Small](https://github.com/user-attachments/assets/2d5b4b93-bd52-4195-857b-95585c3b0f3b)
 
 ### Focus Areas: What specific areas of the project did you prioritize? Why did you choose to focus on these areas?
 
