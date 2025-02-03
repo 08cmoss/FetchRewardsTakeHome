@@ -22,9 +22,7 @@ struct RecipeListView: View {
             }
             .onAppear {
                 Task {
-                    if viewModel.recipes.isEmpty {
-                        await viewModel.getRecipes()
-                    }
+                    await viewModel.getRecipes()
                 }
             }
             .overlay {
