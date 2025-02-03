@@ -17,6 +17,16 @@ struct RecipeListView: View {
                 RecipeView(recipe: recipe)
             }
             .navigationTitle("Recipes")
+            .refreshable {
+                await viewModel.getRecipes()
+            }
+            .onAppear {
+                Task {
+                    if viewModel.recipes.isEmpty {
+                        await viewModel.getRecipes()
+                    }
+                }
+            }
             .overlay {
                 if viewModel.recipes.isEmpty {
                     ContentUnavailableView("No recipes found",
@@ -25,14 +35,8 @@ struct RecipeListView: View {
                 }
             }
         }
-        .onAppear(perform: {
-            Task {
-                if viewModel.recipes.isEmpty {
-                    await viewModel.getRecipes()
-                }
-            }
-        })
-        .alert(viewModel.errorMessage ?? "", isPresented: .constant(viewModel.errorMessage != nil)) {
+        .alert(viewModel.errorMessage ?? "",
+               isPresented: .constant(viewModel.errorMessage != nil)) {
             Button("Dismiss", role: .cancel) { viewModel.errorMessage = nil }
         }
     }

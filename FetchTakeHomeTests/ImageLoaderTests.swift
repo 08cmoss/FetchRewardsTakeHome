@@ -15,10 +15,8 @@ class ImageLoaderTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        loader = ImageLoader()
+        loader = ImageLoader(session: .mock)
         testImageData = UIImage(systemName: "star")!.jpegData(compressionQuality: 0.8)
-
-        MockURLProtocol.testData = testImageData
         MockURLProtocol.response = HTTPURLResponse(url: URL(string: "https://test.com/image.jpg")!,
                                                    statusCode: 200,
                                                    httpVersion: nil,
@@ -31,21 +29,37 @@ class ImageLoaderTests: XCTestCase {
         super.tearDown()
     }
 
-    func testLoadImageFromNetwork() async {
+    func testLoadImageSuccess() async {
+        MockURLProtocol.scenario = .success
+        MockURLProtocol.testData = testImageData
+
         await loader.loadImage(from: "https://test.com/image.jpg")
 
         XCTAssertNotNil(loader.image)
         XCTAssertEqual(loader.image?.pngData(), UIImage(data: testImageData)?.pngData())
     }
 
-    func testLoadImageFromCache() async {
-        let testURL = "https://test.com/image.jpg"
-        let testImage = UIImage(systemName: "star")!
-        ImageCacheManager.shared.setImage(image: testImage, for: testURL)
+    func testLoadImageEmptyResponse() async {
+        MockURLProtocol.scenario = .emptyResponse
 
-        await loader.loadImage(from: testURL)
+        await loader.loadImage(from: "https://test.com/image.jpg")
 
-        XCTAssertNotNil(loader.image)
-        XCTAssertEqual(loader.image?.pngData(), testImage.pngData())
+        XCTAssertNil(loader.image)
+    }
+
+    func testLoadImageMalformedResponse() async {
+        MockURLProtocol.scenario = .malformedResponse
+
+        await loader.loadImage(from: "https://test.com/image.jpg")
+
+        XCTAssertNil(loader.image)
+    }
+
+    func testLoadImageNetworkError() async {
+        MockURLProtocol.scenario = .networkError
+
+        await loader.loadImage(from: "https://test.com/image.jpg")
+
+        XCTAssertNil(loader.image)
     }
 }

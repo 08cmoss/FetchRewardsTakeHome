@@ -11,6 +11,14 @@ class MockURLProtocol: URLProtocol {
     static var testData: Data?
     static var response: URLResponse?
     static var error: Error?
+    static var scenario: TestScenario = .success
+
+    enum TestScenario {
+        case success
+        case emptyResponse
+        case malformedResponse
+        case networkError
+    }
 
     override class func canInit(with request: URLRequest) -> Bool {
         return true
@@ -21,14 +29,22 @@ class MockURLProtocol: URLProtocol {
     }
 
     override func startLoading() {
-        if let error = MockURLProtocol.error {
-            client?.urlProtocol(self, didFailWithError: error)
-        } else {
+        switch MockURLProtocol.scenario {
+        case .success:
             client?.urlProtocol(self, didLoad: MockURLProtocol.testData ?? Data())
-            if let response = MockURLProtocol.response {
-                client?.urlProtocol(self, didReceive: response, cacheStoragePolicy: .notAllowed)
-            }
+            client?.urlProtocol(self, didReceive: MockURLProtocol.response!, cacheStoragePolicy: .notAllowed)
+
+        case .emptyResponse:
+            client?.urlProtocol(self, didLoad: Data())
+
+        case .malformedResponse:
+            let invalidData = "Invalid Image Data".data(using: .utf8)!
+            client?.urlProtocol(self, didLoad: invalidData)
+
+        case .networkError:
+            client?.urlProtocol(self, didFailWithError: URLError(.notConnectedToInternet))
         }
+
         client?.urlProtocolDidFinishLoading(self)
     }
 

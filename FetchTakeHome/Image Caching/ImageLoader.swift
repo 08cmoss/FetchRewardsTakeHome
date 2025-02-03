@@ -12,6 +12,11 @@ class ImageLoader: ObservableObject {
     @Published var image: UIImage?
 
     private let cache = ImageCacheManager.shared
+    private let session: URLSession
+
+    init(session: URLSession = .shared) {
+        self.session = session
+    }
 
     func loadImage(from urlString: String) async {
         if let cachedImage = cache.getImage(for: urlString) {
@@ -20,13 +25,12 @@ class ImageLoader: ObservableObject {
         }
 
         guard let url = URL(string: urlString) else { return }
-        
+
         do {
-            let (data, _) = try await URLSession.shared.data(from: url)
+            let (data, _) = try await session.data(from: url)
             guard let fetchedImage = UIImage(data: data) else { return }
 
             cache.setImage(image: fetchedImage, for: urlString)
-
             self.image = fetchedImage
         } catch {
             print("Failed to load image: \(error)")
