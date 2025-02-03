@@ -1,0 +1,43 @@
+//
+//  RecipeListView.swift
+//  FetchTakeHome
+//
+//  Created by Cameron Moss on 2/3/25.
+//
+
+import SwiftUI
+
+struct RecipeListView: View {
+    @StateObject private var viewModel = RecipeListViewModel(apiService: APIService.shared)
+    @State private var navPath: [Recipe] = []
+
+    var body: some View {
+        NavigationStack(path: $navPath) {
+            List(viewModel.recipes, id: \.uuid) { recipe in
+                RecipeView(recipe: recipe)
+            }
+            .navigationTitle("Recipes")
+            .overlay {
+                if viewModel.recipes.isEmpty {
+                    ContentUnavailableView("No recipes found",
+                                           systemImage: "fork.knife.circle.fill",
+                                           description: Text("Please try again later"))
+                }
+            }
+        }
+        .onAppear(perform: {
+            Task {
+                if viewModel.recipes.isEmpty {
+                    await viewModel.getRecipes()
+                }
+            }
+        })
+        .alert(viewModel.errorMessage ?? "", isPresented: .constant(viewModel.errorMessage != nil)) {
+            Button("Dismiss", role: .cancel) { viewModel.errorMessage = nil }
+        }
+    }
+}
+
+#Preview("RecipeListView") {
+    RecipeListView()
+}
