@@ -7,6 +7,7 @@
 
 import Foundation
 
+@MainActor
 class RecipeListViewModel: ObservableObject {
     @Published var recipes: [Recipe] = []
     @Published var errorMessage: String?

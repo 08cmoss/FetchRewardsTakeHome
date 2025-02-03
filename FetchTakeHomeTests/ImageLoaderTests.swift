@@ -8,6 +8,7 @@
 import XCTest
 @testable import FetchTakeHome
 
+@MainActor
 class ImageLoaderTests: XCTestCase {
     var loader: ImageLoader!
     var testImageData: Data!
