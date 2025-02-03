@@ -29,30 +29,9 @@
 		1AFE11722D51069E00126C0D /* FetchTakeHomeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FetchTakeHomeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		1AFE11B22D51304600126C0D /* Exceptions for "FetchTakeHome" folder in "FetchTakeHome" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				App/Readme.md,
-			);
-			target = 1AFE11572D51069C00126C0D /* FetchTakeHome */;
-		};
-		1AFE11B32D51304600126C0D /* Exceptions for "FetchTakeHome" folder in "FetchTakeHomeTests" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				App/Readme.md,
-			);
-			target = 1AFE11672D51069E00126C0D /* FetchTakeHomeTests */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		1AFE115A2D51069C00126C0D /* FetchTakeHome */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				1AFE11B22D51304600126C0D /* Exceptions for "FetchTakeHome" folder in "FetchTakeHome" target */,
-				1AFE11B32D51304600126C0D /* Exceptions for "FetchTakeHome" folder in "FetchTakeHomeTests" target */,
-			);
 			path = FetchTakeHome;
 			sourceTree = "<group>";
 		};
